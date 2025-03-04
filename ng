@@ -1,0 +1,160 @@
+angular is distributed as a javascript file, and can be added to a web page with a script tag:
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+modules define angularjs application
+controllers control angularjs application
+AngularJS binds data to HTML using Expressions or ng-bind.
+AngularJS expressions do not support conditionals, loops, and exceptions
+The module is a container for the application controllers.
+Controllers always belong to a module.
+we can add a restrict property when creating new attribute to only invoke by some methods, possible values:
+	-E for Element name
+	-A for Attribute
+	-C for Class
+	-M for Comment
+	combination like EA also work
+ng-model's binding is two way (if the application data it is bound to changes, application value changes as well)
+The ng-model directive adds/removes the following classes, according to the status of the form field:
+	-ng-empty
+	-ng-not-empty
+	-ng-touched
+	-ng-untouched
+	-ng-valid
+	-ng-invalid
+	-ng-dirty
+	-ng-pending
+	-ng-pristine
+The HTML container where the AngularJS application is displayed, is called the view.
+TwoWayBinding = data binding in angularjs is the synchronization between the model and the view.
+When data in the model changes, the view reflects the change, and when data in the view changes, the model is updated as well.
+Because of the immediate synchronization of the model and the view, the controller can be completely separated from the view, and simply concentrate on the model data.
+AngularJS controllers control the data of AngularJS applications.
+A controller is a js object, created by a standard js object constructor.
+
+
+ANGULAR DIRECTIVES
+ng-app -> instructs that the code wrapped by it is angular
+ng-model -> binds the input value (input, select, textarea) to application data
+ng-bind -> binds application data to html view (directive) Or we can just use double curly braces (expressions)
+ng-init -> initializes the application variables
+ng-repeat -> clones HTML elements once for each item in a collection
+ng-controller -> defines the application controller
+
+
+USE-CASES
+<div ng-app="" ng-init="firstName='John'">
+<p>Name: <input type="text" ng-model="name"></p>
+<p ng-bind="name"></p> or <p>{{name}}</p>
+<p>My first expression: {{ 5 + 5 }}</p>
+
+<-------------------------------->
+
+<div ng-app="myApp" ng-controller="myCtrl">
+
+First Name: <input type="text" ng-model="firstName"><br>
+Last Name: <input type="text" ng-model="lastName"><br>
+<br>
+Full Name: {{firstName + " " + lastName}}
+
+</div>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope) {
+  $scope.firstName= "John";
+  $scope.lastName= "Doe";
+});
+</script>
+
+<-------------------------------->
+
+<div ng-app="" ng-init="names=[
+{name:'Jani',country:'Norway'},
+{name:'Hege',country:'Sweden'},
+{name:'Kai',country:'Denmark'}]">
+
+<ul>
+  <li ng-repeat="x in names">
+    {{ x.name + ', ' + x.country }}
+  </li>
+</ul>
+
+</div>
+
+<-------------------------------->
+
+<body ng-app="myApp">
+
+<w3-test-directive></w3-test-directive> or <div w3-test-directive></div> or <div class="w3-test-directive"></div>
+
+<script>
+var app = angular.module("myApp", []);
+app.directive("w3TestDirective", function() {
+  return {
+    template : "<h1>Made by a directive!</h1>"
+  };
+});
+</script>
+
+</body>
+
+<-------------------------------->
+
+<form ng-app="" name="myForm">
+  Email:
+  <input type="email" name="myAddress" ng-model="text">
+  <span ng-show="myForm.myAddress.$error.email">Not a valid e-mail address</span>
+</form>
+
+<-------------------------------->
+
+<form ng-app="" name="myForm" ng-init="myText = 'post@myweb.com'">
+  Email:
+  <input type="email" name="myAddress" ng-model="myText" required>
+  <h1>Status</h1>
+  {{myForm.myAddress.$valid}}
+  {{myForm.myAddress.$dirty}}
+  {{myForm.myAddress.$touched}}
+</form>
+
+<-------------------------------->
+
+<style>
+input.ng-invalid {
+  background-color: lightblue;
+}
+</style>
+<body>
+
+<form ng-app="" name="myForm">
+  Enter your name:
+  <input name="myName" ng-model="myText" required>
+</form>
+
+<-------------------------------->
+
+
+
+
+
+<-------------------------------->
+
+
+
+
+
+<-------------------------------->
+
+
+
+
+
+<-------------------------------->
+
+
+
+
+
+<-------------------------------->
+
