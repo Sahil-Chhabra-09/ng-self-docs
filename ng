@@ -9,40 +9,112 @@ AngularJS expressions do not support conditionals, loops, and exceptions
 The module is a container for the application controllers.
 Controllers always belong to a module.
 we can add a restrict property when creating new attribute to only invoke by some methods, possible values:
-	-E for Element name
-	-A for Attribute
-	-C for Class
-	-M for Comment
-	combination like EA also work
+-E for Element name
+-A for Attribute
+-C for Class
+-M for Comment
+combination like EA also work
 ng-model's binding is two way (if the application data it is bound to changes, application value changes as well)
 The ng-model directive adds/removes the following classes, according to the status of the form field:
-	-ng-empty
-	-ng-not-empty
-	-ng-touched
-	-ng-untouched
-	-ng-valid
-	-ng-invalid
-	-ng-dirty
-	-ng-pending
-	-ng-pristine
+-ng-empty
+-ng-not-empty
+-ng-touched
+-ng-untouched
+-ng-valid
+-ng-invalid
+-ng-dirty
+-ng-pending
+-ng-pristine
 The HTML container where the AngularJS application is displayed, is called the view.
 TwoWayBinding = data binding in angularjs is the synchronization between the model and the view.
 When data in the model changes, the view reflects the change, and when data in the view changes, the model is updated as well.
 Because of the immediate synchronization of the model and the view, the controller can be completely separated from the view, and simply concentrate on the model data.
 AngularJS controllers control the data of AngularJS applications.
 A controller is a js object, created by a standard js object constructor.
+controller can have variables as well as functions
+AngularJS will invoke the controller with a $scope object.
+The scope is a JavaScript object with properties and methods, which are available for both the view and the controller.
+If we consider an AngularJS application to consist of:
+
+- View, which is the HTML.
+- Model, which is the data available for the current view.
+- Controller, which is the JavaScript function that makes/changes/removes/controls the data.
+
+All applications have a $rootScope which is the scope created on the HTML element that contains the ng-app directive.
+The rootScope is available in the entire application.
+If a variable has the same name in both the current scope and in the rootScope, the application uses the one in the current scope.
+Filters can be added to expressions by using the pipe character |, followed by a filter. Available filters : currency, date, filter, json, limitTo, lowercase, number, orderBy, uppercase
+services like $location = useNavigation, $http = fetch, $timeout = setTimeout, $interval = setInterval etc.
+To create your own service, connect your service to the module
+There are properties like $index and $even and $odd when performing ng-repeat and can be utilized in ng-if or in expressions
+Input fields have the following states:
+
+- $untouched The field has not been touched yet
+- $touched The field has been touched
+- $pristine The field has not been modified yet
+- $dirty The field has been modified
+- $invalid The field content is not valid
+- $valid The field content is valid
+
+They are all properties of the input field, and are either true or false.
+
+Forms have the following states:
+
+- $pristine No fields have been modified yet
+- $dirty One or more have been modified
+- $invalid The form content is not valid
+- $valid The form content is valid
+- $submitted The form is submitted
+
+They are all properties of the form, and are either true or false.
+
+and on similar bases, angular adds classes to css to have relevant css
+ngRoute is an angular module that is used for routing
 
 
-ANGULAR DIRECTIVES
+
+
+
+ANGULARJS DIRECTIVES
 ng-app -> instructs that the code wrapped by it is angular
 ng-model -> binds the input value (input, select, textarea) to application data
 ng-bind -> binds application data to html view (directive) Or we can just use double curly braces (expressions)
 ng-init -> initializes the application variables
 ng-repeat -> clones HTML elements once for each item in a collection
 ng-controller -> defines the application controller
+ng-options -> dropdown in angularjs
+ng-value -> used to specify the value of option or an input tag
+ng-disabled -> binds angularjs application data to disabled attribute of html elements.
+
+ANGULARJS DOM
+ng-show -> shows or hides an html element
+ng-hide -> shows or hides an html element again
+
+ANGULARJS EVENTS
+ng-keydown
+ng-keypress
+ng-keyup
+ng-mouseover
+ng-mouseenter
+ng-mousemove
+ng-mouseleave
+ng-mousedown
+ng-mouseup
+ng-click
+ng-blur
+ng-change
+ng-copy
+ng-cut
+ng-paste
+ng-dblclick
+ng-focus
+
+
+
 
 
 USE-CASES
+
 <div ng-app="" ng-init="firstName='John'">
 <p>Name: <input type="text" ng-model="name"></p>
 <p ng-bind="name"></p> or <p>{{name}}</p>
@@ -134,27 +206,117 @@ input.ng-invalid {
 
 <-------------------------------->
 
+<div ng-app="myApp" ng-controller="myCtrl">
 
+First Name: <input type="text" ng-model="firstName"><br>
+Last Name: <input type="text" ng-model="lastName"><br>
+<br>
+Full Name: {{firstName + " " + lastName}}
 
+</div>
 
-
-<-------------------------------->
-
-
-
-
-
-<-------------------------------->
-
-
-
-
-
-<-------------------------------->
-
-
-
-
+<script>
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope) {
+  $scope.firstName = "John";
+  $scope.lastName = "Doe";
+});
+</script>
 
 <-------------------------------->
 
+<body ng-app="myApp">
+
+<p>The rootScope's favorite color:</p>
+<h1>{{color}}</h1>
+
+<div ng-controller="myCtrl">
+  <p>The scope of the controller's favorite color:</p>
+  <h1>{{color}}</h1>
+</div>
+
+<p>The rootScope's favorite color is still:</p>
+<h1>{{color}}</h1>
+
+<script>
+var app = angular.module('myApp', []);
+app.run(function($rootScope) {
+  $rootScope.color = 'blue';
+});
+app.controller('myCtrl', function($scope) {
+  $scope.color = "red";
+});
+</script>
+</body>
+
+<-------------------------------->
+
+<div ng-app="myApp" ng-controller="personCtrl">
+
+<p>The name is {{ lastName | uppercase }}</p>
+
+</div>
+
+<-------------------------------->
+
+<div ng-app="myApp" ng-controller="myCtrl">
+
+<select ng-model="selectedName" ng-options="x for x in names">
+</select>
+
+</div>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope) {
+  $scope.names = ["Emil", "Tobias", "Linus"];
+});
+</script>
+
+OR
+
+<select>
+  <option ng-repeat="x in names">{{x}}</option>
+</select>
+
+<-------------------------------->
+
+<select ng-model="selectedCar">
+  <option ng-repeat="x in cars" ng-value="{{x}}">{{x.model}}</option>
+</select>
+
+<h1>You selected a {{selectedCar.color}} {{selectedCar.model}}</h1>
+
+<-------------------------------->
+
+<div ng-app="myApp" ng-controller="myCtrl">
+
+<h1 ng-mousemove="myFunc($event)">Mouse Over Me!</h1>
+<h1 ng-mousemove="count = count + 1">Mouse over me!</h1>
+<button ng-click="count = count + 1">Click me!</button>
+<button ng-click="myFunction()">Click me!</button>
+
+<p>{{ count }}</p>
+
+</div>
+<script>
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope) {
+  $scope.count = 0;
+});
+</script>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope) {
+  $scope.myFunc = function(myE) {
+    $scope.x = myE.clientX;
+    $scope.y = myE.clientY;
+  }
+});
+</script>
+
+<-------------------------------->
+<-------------------------------->
+
+Reference: https://www.w3schools.com/angular
